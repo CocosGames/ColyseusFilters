@@ -1,11 +1,11 @@
 import { Room, Client } from "colyseus";
-import { MyRoomState } from "./schema/MyRoomState";
+import { Dice } from "./schema/Dice";
 
-export class MyRoom extends Room<MyRoomState> {
+export class MyRoom extends Room<Dice> {
 
   onCreate (options: any) {
-    this.setState(new MyRoomState());
-
+    this.setState(new Dice());
+    this.autoDispose = false;
     this.onMessage("type", (client, message) => {
       //
       // handle "type" message
