@@ -5,17 +5,22 @@ export class MyRoom extends Room<Dice> {
 
   onCreate (options: any) {
     this.setState(new Dice());
-    this.autoDispose = false;
-    this.onMessage("type", (client, message) => {
-      //
-      // handle "type" message
-      //
+
+    this.onMessage("guess", (client, message) => {
+      if (message == "+" && this.state.number>=4 || message=="-" && this.state.number<=3)
+        this.state.result = "win";
+      else
+        this.state.result = "lose";
+      this.state.status = "opened"
     });
 
   }
 
   onJoin (client: Client, options: any) {
     console.log(client.sessionId, "joined!");
+    this.lock();
+    this.state.number = Math.floor(Math.random() * 6) + 1;
+    this.state.status = "guessing";
   }
 
   onLeave (client: Client, consented: boolean) {
